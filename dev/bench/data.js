@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1658935727129,
+  "lastUpdate": 1658935728955,
   "repoUrl": "https://github.com/Tristan63170/FCCAnalyses",
   "entries": {
     "Benchmark": [
@@ -326,6 +326,40 @@ window.BENCHMARK_DATA = {
             "unit": "Seconds",
             "range": 10,
             "extra": "Analysis path: examples/FCCee/flavour/Bc2TauNu"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "tristan.miralles@clermont.in2p3.fr",
+            "name": "Tristan Miralles",
+            "username": "Tristan63170"
+          },
+          "committer": {
+            "email": "tristan.miralles@clermont.in2p3.fr",
+            "name": "Tristan Miralles",
+            "username": "Tristan63170"
+          },
+          "distinct": true,
+          "id": "bae5dfa2414374991d89fc007b71801c6c79bd63",
+          "message": "Somes fixes to follow Emmanuel tuto about vertexing in FCCee",
+          "timestamp": "2022-07-26T16:26:55+02:00",
+          "tree_id": "af16db91551784b543594c1f0977807d6d9f4593",
+          "url": "https://github.com/Tristan63170/FCCAnalyses/commit/bae5dfa2414374991d89fc007b71801c6c79bd63"
+        },
+        "date": 1658935728278,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "prod | Events processed per second: examples/FCCee/higgs/mH-recoil/mumu",
+            "value": 5.754257876499089,
+            "unit": "Evt/s"
+          },
+          {
+            "name": "prod | Events processed per second: examples/FCCee/flavour/Bc2TauNu",
+            "value": 4.916268443402801,
+            "unit": "Evt/s"
           }
         ]
       }
