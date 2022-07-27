@@ -88,7 +88,7 @@ namespace VertexFitterSimple{
   /// Vertex (code from Franco Bedeschi): passing the tracks. Units for the beamspot constraint: mum
   /// ( was my VertexFitter_Tk_v2 in earlier version )
 
-  FCCAnalyses:: VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary, ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
+  FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary, ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
 						      float radius_startingpoint = -1.,
                                                       bool BeamSpotConstraint = false,
                                                       double sigmax=0., double sigmay=0., double sigmaz=0.,

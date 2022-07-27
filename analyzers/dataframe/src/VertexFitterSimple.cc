@@ -1,9 +1,9 @@
-﻿#include "VertexFitterSimple.h"
+﻿#include "FCCAnalyses/VertexFitterSimple.h"
 
 #include "TFile.h"
 #include "TString.h"
 
-#include  "MCParticle.h"
+#include  "FCCAnalyses/MCParticle.h"
 
 #include "VertexFit.h"  // from Delphes
 
@@ -291,7 +291,7 @@ TVectorD VertexFitterSimple::Fill_x(TVectorD par, Double_t phi){
 
 
 
-VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter( int Primary, 
+FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter( int Primary, 
 								     ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> recoparticles,
 								     ROOT::VecOps::RVec<edm4hep::TrackState> thetracks,
 								     bool BeamSpotConstraint,
@@ -303,10 +303,10 @@ VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter( int Primary
   // input = a collection of recoparticles (in case one want to make associations to RecoParticles ?)
   // and thetracks = the collection of all TrackState in the event
   
-  VertexingUtils::FCCAnalysesVertex thevertex;
+  FCCAnalyses::VertexingUtils::FCCAnalysesVertex thevertex;
   
   // retrieve the tracks associated to the recoparticles
-  ROOT::VecOps::RVec<edm4hep::TrackState> tracks = ReconstructedParticle2Track::getRP2TRK( recoparticles, thetracks );
+  ROOT::VecOps::RVec<edm4hep::TrackState> tracks = FCCAnalyses::ReconstructedParticle2Track::getRP2TRK( recoparticles, thetracks );
   
   // and run the vertex fitter
   
@@ -742,7 +742,7 @@ VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Prim
 ////////////////////////////////////////////////////
 
 
-ROOT::VecOps::RVec<edm4hep::TrackState>   VertexFitterSimple::get_PrimaryTracks( VertexingUtils::FCCAnalysesVertex  initialVertex,
+ROOT::VecOps::RVec<edm4hep::TrackState>   VertexFitterSimple::get_PrimaryTracks( FCCAnalyses::VertexingUtils::FCCAnalysesVertex  initialVertex,
                                                                         ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
                                                                         bool BeamSpotConstraint,
                                                                         double bsc_sigmax, double bsc_sigmay, double bsc_sigmaz,
@@ -798,7 +798,7 @@ seltracks.erase( seltracks.begin() + maxElementIndex );
 ipass ++;
 
  float startingRadius = -1;
- VertexingUtils::FCCAnalysesVertex vtx = VertexFitterSimple::VertexFitter_Tk(  isPrimaryVertex, 
+ FCCAnalyses::VertexingUtils::FCCAnalysesVertex vtx = VertexFitterSimple::VertexFitter_Tk(  isPrimaryVertex, 
 										seltracks, 
 									 startingRadius,
 									 BeamSpotConstraint,
@@ -858,7 +858,7 @@ ROOT::VecOps::RVec<bool> VertexFitterSimple::IsPrimary_forTracks( ROOT::VecOps::
 
 // Update of Franco, January  2022
 
-VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Primary,
+FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Primary,
                                                                         ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
 									float startingpoint_radius, 
                                                                         bool BeamSpotConstraint,
@@ -879,7 +879,7 @@ VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Prim
  //std::cout << " R_MC_VERTEX = " << R_MC_VERTEX << std::endl;
 
 
-  VertexingUtils::FCCAnalysesVertex TheVertex;
+  FCCAnalyses::VertexingUtils::FCCAnalysesVertex TheVertex;
 
   edm4hep::VertexData result;
   ROOT::VecOps::RVec<float> reco_chi2;
@@ -907,9 +907,9 @@ VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Prim
 
   for (Int_t i = 0; i < Ntr; i++) {
     edm4hep::TrackState t = tracks[i] ;
-    TVectorD par = VertexingUtils::get_trackParam( t ) ;
+    TVectorD par = FCCAnalyses::VertexingUtils::get_trackParam( t ) ;
     trkPar[i] = new TVectorD( par );
-    TMatrixDSym Cov = VertexingUtils::get_trackCov( t );
+    TMatrixDSym Cov = FCCAnalyses::VertexingUtils::get_trackCov( t );
     trkCov[i] = new TMatrixDSym ( Cov );
   } 
 
