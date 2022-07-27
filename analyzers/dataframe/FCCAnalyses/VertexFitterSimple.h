@@ -22,16 +22,17 @@
 #include "edm4hep/VertexData.h"
 #include "edm4hep/Vertex.h"
 
+#include "VertexFit.h"    // from Delphes - updates Franco, Jul 2022
+#include "VertexMore.h"
 
-/** Vertex interface using Franco Bedeshi's code.
-This represents a set functions and utilities to perfom vertexing from a list of tracks.
+/** Vertex interface using Franco Bedeshi's code. 
+This represents a set functions and utilities to perfom vertexing from a list of tracks.  
 */
-namespace FCCAnalyses{
 
 namespace VertexFitterSimple{
 
   /// Vertex (code from Franco Bedeschi): passing the recoparticles. Units for the beamspot constraint: mum
-  VertexingUtils::FCCAnalysesVertex  VertexFitter( int Primary,
+  FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter( int Primary, 
 						   ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> recoparticles,
 						   ROOT::VecOps::RVec<edm4hep::TrackState> alltracks,
 						   bool BeamSpotConstraint = false,
@@ -40,41 +41,60 @@ namespace VertexFitterSimple{
 
 
   /// Vertex (code from Franco Bedeschi): passing the tracks. Units for the beamspot constraint: mum
+    /**
   VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary, ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
-						      bool BeamSpotConstraint = false,
-						      double sigmax=0., double sigmay=0., double sigmaz=0.,
+						      bool BeamSpotConstraint = false,		
+						      double sigmax=0., double sigmay=0., double sigmaz=0., 
                                                       double bsc_x=0., double bsc_y=0., double bsc_z=0. )  ;
+*/
 
-/// Return the tracks that are flagged as coming from the primary vertex
-  ROOT::VecOps::RVec<edm4hep::TrackState> get_PrimaryTracks( VertexingUtils::FCCAnalysesVertex  initialVertex,
+
+  /// Return the tracks that are flagged as coming from the primary vertex
+  ROOT::VecOps::RVec<edm4hep::TrackState> get_PrimaryTracks( FCCAnalyses::VertexingUtils::FCCAnalysesVertex  initialVertex,
                                                                         ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
                                                                         bool BeamSpotConstraint,
                                                                         double bsc_sigmax, double bsc_sigmay, double bsc_sigmaz,
                                                                         double bsc_x, double bsc_y, double bsc_z,
                                                                         int ipass = 0 ) ;
 
-
-/// Return the tracks that are NOT flagged as coming from the primary vertex
+  
+   /// Return the tracks that are NOT flagged as coming from the primary vertex
   ROOT::VecOps::RVec<edm4hep::TrackState>  get_NonPrimaryTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
                                                                  ROOT::VecOps::RVec<edm4hep::TrackState> primaryTracks ) ;
 
-/// for an input vector of tracks, return a  vector of bools that tell if the track  was identified as a primary track
-   ROOT::VecOps::RVec<bool> IsPrimary_forTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
+  /// for an input vector of tracks, return a  vector of bools that tell if the track  was identified as a primary track
+  ROOT::VecOps::RVec<bool> IsPrimary_forTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
                                                                  ROOT::VecOps::RVec<edm4hep::TrackState> primaryTracks ) ;
 
 
-
+/*
   Double_t FastRv(TVectorD p1, TVectorD p2) ;
   TMatrixDSym RegInv3(TMatrixDSym &Smat0) ;
   TMatrixD Fill_A(TVectorD par, Double_t phi) ;
   TVectorD Fill_a(TVectorD par, Double_t phi) ;
   TVectorD Fill_x0(TVectorD par) ;
   TVectorD Fill_x(TVectorD par, Double_t phi) ;
-
-  TVectorD XPtoPar(TVector3 x, TVector3 p, Double_t Q);
   TVector3 ParToP(TVectorD Par);
 
-}//end NS VertexFitterSimple
+*/
 
-}//end NS FCCAnalyses
+  TVectorD XPtoPar(TVector3 x, TVector3 p, Double_t Q);
+
+
+
+
+// ------------   Updated code  Franco, Jan 2022
+
+  /// Vertex (code from Franco Bedeschi): passing the tracks. Units for the beamspot constraint: mum
+  /// ( was my VertexFitter_Tk_v2 in earlier version )
+
+  FCCAnalyses:: VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary, ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
+						      float radius_startingpoint = -1.,
+                                                      bool BeamSpotConstraint = false,
+                                                      double sigmax=0., double sigmay=0., double sigmaz=0.,
+                                                      double bsc_x=0., double bsc_y=0., double bsc_z=0. )  ;
+
+
+}
 #endif
+
