@@ -6,7 +6,7 @@ gROOT->Reset();
 //    /eos/experiment/fcc/ee/generation/DelphesEvents/spring2021/IDEA/p8_ee_Zuds_ecm91/events_125841058.root
 
 
-TFile* f = new TFile("events_125841058.root");
+TFile* f = new TFile("events_177750239.root");
 TTree* events = (TTree*)f->Get("events");
 
 //TString vtx = "Vertex_primaryTracks";   // primary tracks selected based on MC-matching

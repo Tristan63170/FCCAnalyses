@@ -69,7 +69,7 @@ target_link_libraries(FCCAnalyses
                       ${FASTJET_LIBRARY_DIRS}/libfastjetplugins.so
                       ${acts_LIBRARY}
                       ActsCore
-		      Delphes
+		      ${DELPHES_LIBRARIES}
                       #${AWKWARD_LIBRARIES}
                       ${LIBAWKWARD}
                       ${CPU-KERNELS}

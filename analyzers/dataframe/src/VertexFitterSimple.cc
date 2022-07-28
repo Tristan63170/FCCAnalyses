@@ -6,8 +6,8 @@
 #include  "FCCAnalyses/MCParticle.h"
 
 #include "VertexFit.h"  // from Delphes
-
-using namespace VertexFitterSimple;
+namespace FCCAnalyses{
+namespace VertexFitterSimple{
 
 
 
@@ -31,7 +31,7 @@ TVector3 VertexFitterSimple::ParToP(TVectorD Par){
 
 // ---- keep because of myUtils ...
 
-TVectorD VertexFitterSimple::XPtoPar(TVector3 x, TVector3 p, Double_t Q){
+TVectorD XPtoPar(TVector3 x, TVector3 p, Double_t Q){
 
   double fB = 2;  // 2 Tesla
   
@@ -291,7 +291,7 @@ TVectorD VertexFitterSimple::Fill_x(TVectorD par, Double_t phi){
 
 
 
-FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter( int Primary, 
+FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter( int Primary, 
 								     ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> recoparticles,
 								     ROOT::VecOps::RVec<edm4hep::TrackState> thetracks,
 								     bool BeamSpotConstraint,
@@ -742,7 +742,7 @@ VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Prim
 ////////////////////////////////////////////////////
 
 
-ROOT::VecOps::RVec<edm4hep::TrackState>   VertexFitterSimple::get_PrimaryTracks( FCCAnalyses::VertexingUtils::FCCAnalysesVertex  initialVertex,
+ROOT::VecOps::RVec<edm4hep::TrackState>   get_PrimaryTracks( FCCAnalyses::VertexingUtils::FCCAnalysesVertex  initialVertex,
                                                                         ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
                                                                         bool BeamSpotConstraint,
                                                                         double bsc_sigmax, double bsc_sigmay, double bsc_sigmaz,
@@ -798,14 +798,14 @@ seltracks.erase( seltracks.begin() + maxElementIndex );
 ipass ++;
 
  float startingRadius = -1;
- FCCAnalyses::VertexingUtils::FCCAnalysesVertex vtx = VertexFitterSimple::VertexFitter_Tk(  isPrimaryVertex, 
+ FCCAnalyses::VertexingUtils::FCCAnalysesVertex vtx = FCCAnalyses::VertexFitterSimple::VertexFitter_Tk(  isPrimaryVertex, 
 										seltracks, 
 									 startingRadius,
 									 BeamSpotConstraint,
                                                                          bsc_sigmax, bsc_sigmay, bsc_sigmaz,
                                                                          bsc_x, bsc_y, bsc_z )  ;
 
- return VertexFitterSimple::get_PrimaryTracks( vtx, seltracks, BeamSpotConstraint, bsc_sigmax, bsc_sigmay, bsc_sigmaz, 
+ return FCCAnalyses::VertexFitterSimple::get_PrimaryTracks( vtx, seltracks, BeamSpotConstraint, bsc_sigmax, bsc_sigmay, bsc_sigmaz, 
 						bsc_x,  bsc_y, bsc_z, ipass ) ;
 
 
@@ -813,7 +813,7 @@ ipass ++;
 }
 
 
-ROOT::VecOps::RVec<edm4hep::TrackState>   VertexFitterSimple::get_NonPrimaryTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
+ROOT::VecOps::RVec<edm4hep::TrackState>   get_NonPrimaryTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
 										    ROOT::VecOps::RVec<edm4hep::TrackState> primaryTracks ) {
 
   ROOT::VecOps::RVec<edm4hep::TrackState> result;
@@ -832,7 +832,7 @@ ROOT::VecOps::RVec<edm4hep::TrackState>   VertexFitterSimple::get_NonPrimaryTrac
 }
 
 
-ROOT::VecOps::RVec<bool> VertexFitterSimple::IsPrimary_forTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
+ROOT::VecOps::RVec<bool> IsPrimary_forTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
                                                                                     ROOT::VecOps::RVec<edm4hep::TrackState> primaryTracks ) {
 
   ROOT::VecOps::RVec<bool> result;
@@ -858,7 +858,7 @@ ROOT::VecOps::RVec<bool> VertexFitterSimple::IsPrimary_forTracks( ROOT::VecOps::
 
 // Update of Franco, January  2022
 
-FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Primary,
+FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
                                                                         ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
 									float startingpoint_radius, 
                                                                         bool BeamSpotConstraint,
@@ -1026,7 +1026,8 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter
 
 }
 
-
+}
+}
 
 
 

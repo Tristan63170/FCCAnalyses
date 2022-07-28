@@ -28,7 +28,7 @@
 /** Vertex interface using Franco Bedeshi's code. 
 This represents a set functions and utilities to perfom vertexing from a list of tracks.  
 */
-
+namespace FCCAnalyses{
 namespace VertexFitterSimple{
 
   /// Vertex (code from Franco Bedeschi): passing the recoparticles. Units for the beamspot constraint: mum
@@ -95,6 +95,7 @@ namespace VertexFitterSimple{
                                                       double bsc_x=0., double bsc_y=0., double bsc_z=0. )  ;
 
 
+}
 }
 #endif
 
