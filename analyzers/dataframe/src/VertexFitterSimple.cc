@@ -6,6 +6,7 @@
 #include  "FCCAnalyses/MCParticle.h"
 
 #include "VertexFit.h"  // from Delphes
+
 namespace FCCAnalyses{
 namespace VertexFitterSimple{
 
@@ -291,7 +292,7 @@ TVectorD VertexFitterSimple::Fill_x(TVectorD par, Double_t phi){
 
 
 
-FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter( int Primary, 
+  FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter( int Primary, 
 								     ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> recoparticles,
 								     ROOT::VecOps::RVec<edm4hep::TrackState> thetracks,
 								     bool BeamSpotConstraint,
@@ -303,10 +304,10 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter( int Primary,
   // input = a collection of recoparticles (in case one want to make associations to RecoParticles ?)
   // and thetracks = the collection of all TrackState in the event
   
-  FCCAnalyses::VertexingUtils::FCCAnalysesVertex thevertex;
+    FCCAnalyses::VertexingUtils::FCCAnalysesVertex thevertex;
   
   // retrieve the tracks associated to the recoparticles
-  ROOT::VecOps::RVec<edm4hep::TrackState> tracks = FCCAnalyses::ReconstructedParticle2Track::getRP2TRK( recoparticles, thetracks );
+    ROOT::VecOps::RVec<edm4hep::TrackState> tracks = FCCAnalyses::ReconstructedParticle2Track::getRP2TRK( recoparticles, thetracks );
   
   // and run the vertex fitter
   
@@ -742,7 +743,7 @@ VertexingUtils::FCCAnalysesVertex  VertexFitterSimple::VertexFitter_Tk( int Prim
 ////////////////////////////////////////////////////
 
 
-ROOT::VecOps::RVec<edm4hep::TrackState>   get_PrimaryTracks( FCCAnalyses::VertexingUtils::FCCAnalysesVertex  initialVertex,
+  ROOT::VecOps::RVec<edm4hep::TrackState>   get_PrimaryTracks_v0( FCCAnalyses::VertexingUtils::FCCAnalysesVertex  initialVertex,
                                                                         ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
                                                                         bool BeamSpotConstraint,
                                                                         double bsc_sigmax, double bsc_sigmay, double bsc_sigmaz,
@@ -805,12 +806,115 @@ ipass ++;
                                                                          bsc_sigmax, bsc_sigmay, bsc_sigmaz,
                                                                          bsc_x, bsc_y, bsc_z )  ;
 
- return FCCAnalyses::VertexFitterSimple::get_PrimaryTracks( vtx, seltracks, BeamSpotConstraint, bsc_sigmax, bsc_sigmay, bsc_sigmaz, 
+ return FCCAnalyses::VertexFitterSimple::get_PrimaryTracks_v0( vtx, seltracks, BeamSpotConstraint, bsc_sigmax, bsc_sigmay, bsc_sigmaz, 
 						bsc_x,  bsc_y, bsc_z, ipass ) ;
 
 
 
 }
+
+
+
+// ----------------------------------------------------------------------------------------------------
+
+
+  ROOT::VecOps::RVec<edm4hep::TrackState>   get_PrimaryTracks( 
+                                                                        ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
+                                                                        bool BeamSpotConstraint,
+                                                                        double bsc_sigmax, double bsc_sigmay, double bsc_sigmaz,
+                                                                        double bsc_x, double bsc_y, double bsc_z) {
+
+
+// Updated code from Franco.  Avoid to define VertexFit objects  recursively... else very very slow.
+//
+// iterative procedure to determine the primary vertex - and the primary tracks
+
+// tracks = the collection of tracks that was used in the first step
+
+// Units for the beam-spot : mum
+// See https://github.com/HEP-FCC/FCCeePhysicsPerformance/tree/master/General#generating-events-under-realistic-fcc-ee-environment-conditions
+
+
+//bool debug  = true ;
+  bool debug = false;
+float CHI2MAX = 25  ;
+//  float CHI2MAX = 10;
+
+if (debug) {
+        std::cout << " ... enter in VertexFitterSimple::get_PrimaryTracks   Ntr = " <<  tracks.size()  << std::endl;
+}
+
+ROOT::VecOps::RVec<edm4hep::TrackState> seltracks = tracks;
+
+if ( seltracks.size() <= 1 ) return seltracks;
+
+  int Ntr = tracks.size();
+
+  TVectorD** trkPar = new TVectorD*[Ntr];
+  TMatrixDSym** trkCov = new TMatrixDSym*[Ntr];
+
+  for (Int_t i = 0; i < Ntr; i++) {
+    edm4hep::TrackState t = tracks[i] ;
+    TVectorD par = FCCAnalyses::VertexingUtils::get_trackParam( t ) ;
+    trkPar[i] = new TVectorD( par );
+    TMatrixDSym Cov = FCCAnalyses::VertexingUtils::get_trackCov( t );
+    trkCov[i] = new TMatrixDSym ( Cov );
+  }
+
+  VertexFit theVertexFit( Ntr, trkPar, trkCov );
+
+  if ( BeamSpotConstraint ){
+     TVectorD xv_BS(3);
+     xv_BS[0] = bsc_x*1e-6;
+     xv_BS[1] = bsc_y*1e-6;
+     xv_BS[2] = bsc_z*1e-6 ;
+     TMatrixDSym cov_BS(3);
+     cov_BS[0][0] = pow( bsc_sigmax * 1e-6, 2) ;
+     cov_BS[1][1] = pow( bsc_sigmay * 1e-6, 2) ;
+     cov_BS[2][2] = pow( bsc_sigmaz * 1e-6, 2) ;
+     theVertexFit.AddVtxConstraint( xv_BS, cov_BS );
+  }
+
+  TVectorD  x = theVertexFit.GetVtx() ;   // this actually runs the fit
+
+ float chi2_max  = 1e30;
+
+
+ while ( chi2_max >= CHI2MAX ) {
+
+        TVectorD tracks_chi2 = theVertexFit.GetVtxChi2List();
+	chi2_max = tracks_chi2.Max();
+	
+        int n_removed = 0;
+      	for (int i=0; i < theVertexFit.GetNtrk(); i++){
+	    float track_chi2 = tracks_chi2[i];
+	    if ( track_chi2 >= chi2_max ) {
+	        theVertexFit.RemoveTrk( i );
+		seltracks.erase( seltracks.begin() + i );
+		n_removed ++;
+            }
+	}
+	if ( n_removed > 0) {
+	    if ( theVertexFit.GetNtrk() > 0 ) {
+	         // run the fit again:
+                 x = theVertexFit.GetVtx() ; 
+	         TVectorD new_tracks_chi2 = theVertexFit.GetVtxChi2List();
+	         chi2_max = new_tracks_chi2.Max();
+	    }
+	    else {
+		chi2_max = 0;   // exit from the loop w/o crashing..
+	    }
+	}
+ }   // end while
+
+ return seltracks;
+
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
 
 
 ROOT::VecOps::RVec<edm4hep::TrackState>   get_NonPrimaryTracks( ROOT::VecOps::RVec<edm4hep::TrackState> allTracks,
@@ -858,7 +962,7 @@ ROOT::VecOps::RVec<bool> IsPrimary_forTracks( ROOT::VecOps::RVec<edm4hep::TrackS
 
 // Update of Franco, January  2022
 
-FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
+  FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
                                                                         ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
 									float startingpoint_radius, 
                                                                         bool BeamSpotConstraint,
@@ -870,7 +974,7 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
 // See https://github.com/HEP-FCC/FCCeePhysicsPerformance/tree/master/General#generating-events-under-realistic-fcc-ee-environment-conditions
 
 
-//std::cout << " --- enter in VertexFitter_Tk_v2 " << std::endl;
+// std::cout << " --- enter in VertexFitter_Tk " << std::endl;
 
   //double R_MC_VERTEX = 1e-3 * sqrt( pow( MCVERTEX[0],2) + pow(MCVERTEX[1],2) );
   double R_startingpoint = 1e-3 * startingpoint_radius ;
@@ -916,6 +1020,7 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
   VertexFit theVertexFit( Ntr, trkPar, trkCov );
 
   if ( BeamSpotConstraint ){
+     //TVectorD xv_BS(  bsc_x*1e-6, bsc_y*1e-6, bsc_z*1e-6 );
      TVectorD xv_BS(3);
      xv_BS[0] = bsc_x*1e-6;
      xv_BS[1] = bsc_y*1e-6;
@@ -934,6 +1039,7 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
   //theVertexFit.VertexFitter() ;
   
   TVectorD  x = theVertexFit.GetVtx() ;	  // this actually runs the fit
+
   float conv = 1e3;
   result.position = edm4hep::Vector3f( x(0)*conv, x(1)*conv, x(2)*conv ) ;  // store the  vertex in mm
 
@@ -950,6 +1056,7 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
  for (int it=0; it < Ntr; it++) {
    reco_chi2.push_back( tracks_chi2[it] ) ;
  }
+
 
  //std::cout << " Fitted vertex: " <<  x(0)*conv << " " << x(1)*conv << " " << x(2)*conv << std::endl;
   TMatrixDSym covX = theVertexFit.GetVtxCov() ;
@@ -1017,7 +1124,6 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
   TheVertex.final_track_phases = final_track_phases;
   TheVertex.reco_chi2 = reco_chi2;
  
-  //std::cout << " ici ... " << std::endl;
   //TheVertex.m_VertexFit = theVertexFit;
   
 
@@ -1028,6 +1134,7 @@ FCCAnalyses::VertexingUtils::FCCAnalysesVertex  VertexFitter_Tk( int Primary,
 
 }
 }
+
 
 
 
