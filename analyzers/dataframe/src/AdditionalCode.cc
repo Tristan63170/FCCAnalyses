@@ -101,3 +101,60 @@ ROOT::VecOps::RVec<int>  getMC_indices_Bs2KKPiK ( ROOT::VecOps::RVec<int> Bs2DsK
 
 
 
+
+// ---------------------------------------------------------------------------------------
+
+// this code, despite the name of the method, is actually more general:
+
+edm4hep::Vector3d BsMCDecayVertex(  ROOT::VecOps::RVec<int>  mcParticles_indices, ROOT::VecOps::RVec<edm4hep::MCParticleData> in) {
+
+   edm4hep::Vector3d vertex(1e12, 1e12, 1e12);
+   if ( mcParticles_indices.size() == 0 ) return vertex;
+
+   int idx_muplus = mcParticles_indices[1];
+   if ( idx_muplus < in.size() ) {
+     vertex = in.at( idx_muplus ).vertex;
+   }
+
+ //std::cout << " in MCDecayVertex, vertex = " << vertex.x << " " << vertex.y << " " << vertex.z << std::endl;
+  return vertex;
+
+}
+
+
+
+
+// ----------------------------------------------------------------------------------------------------------------------------
+
+ROOT::VecOps::RVec<edm4hep::TrackState>  tracks_for_fitting_the_Bs_vertex(
+                                ROOT::VecOps::RVec<edm4hep::TrackState>  ReconstructedDs_atVertex_TrackState_withCovariance,
+				ROOT::VecOps::RVec<edm4hep::TrackState> BachelorKTrack) {
+
+ ROOT::VecOps::RVec<edm4hep::TrackState>  result;
+ if ( ReconstructedDs_atVertex_TrackState_withCovariance.size() != 1 ) return result;
+ if ( BachelorKTrack.size() != 1 )  return result;
+
+ result.push_back( ReconstructedDs_atVertex_TrackState_withCovariance[0])  ;  // the pseudo-Ds track
+ result.push_back( BachelorKTrack[0] );        // the bachelor K
+
+ return result;
+}
+
+
+
+selRP_leg::selRP_leg(int idx) {
+  m_idx = idx;
+};
+
+ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> selRP_leg::operator() ( ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> BsRecoParticles ) {
+  ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData> res;
+  if ( BsRecoParticles.size() == 0) return res;
+  if ( m_idx < BsRecoParticles.size() ) {
+    res.push_back( BsRecoParticles[m_idx] ) ;
+    return res;
+  }
+  else {
+    std::cout << "   !!!  in selRP_leg: idx = " << m_idx << " but size of BsRecoParticles = " << BsRecoParticles.size() << std::endl;
+  }
+  return res;
+}

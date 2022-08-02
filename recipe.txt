@@ -1,0 +1,135 @@
+
+1. Install delphes locally
+==========================
+
+I have used 3.5.1pre02 and updated VertexFit and VertexMore. I suppopse that you could stick to the master branch, but I have not checked it.
+
+source /cvmfs/sw.hsf.org/key4hep/setup.sh
+git clone git@github.com:delphes/delphes.git 
+
+cd delphes
+git checkout tags/3.5.1pre02
+
+# create a new branch :
+git switch -c from-3.5.1pre02
+
+# the latest code from Franco 
+cd external/TrackCovariance
+cp ~eperez/public/MarcoS/NewVertexing/VertexMore* ./.
+cp ~eperez/public/MarcoS/NewVertexing/VertexFit.cc  ./.
+cp ~eperez/public/MarcoS/NewVertexing/VertexFit.h  ./.
+
+cd ../../
+
+# compile:
+mkdir build install
+cd build/
+cmake .. -DCMAKE_INSTALL_PREFIX=../install
+make install     # you will see warnings, that's OK...
+cd ..
+
+# Now install the .h of TrackCovariance - that is the only reason why you have to install delphes and work with a
+# local version ... 
+
+cd install/include
+mkdir TrackCovariance
+cd TrackCovariance
+cp ../../../external/TrackCovariance/*.h ./.
+
+
+#  In order to be 200% sure that the environment is not messed up, I suggest you log out and log in again...
+
+
+2. Recompile FCCAnalyses 
+========================
+
+# Go to your FCCAnalyses working  area and setup the environment :
+source ./setup.sh
+
+# Overwrite the DELPHES environment variable, to pick up your local version :
+# Go to your local DELPHES directory and do :
+
+export LD_LIBRARY_PATH=$PWD/install/lib:$LD_LIBRARY_PATH
+export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
+export DELPHES_DIR=$PWD/install
+
+# ( be careful of  not running again the setup.sh of FCCAnalyses, as it would overwrite again
+# your DELPHES variables ! )
+
+# Go back to your FCCAnalyses directory
+
+# Commit  all your current stuff, create a new branch, and go into it.
+
+cd cmake
+cp ~eperez/public/MarcoS/NewVertexing/FindDelphes.cmake ./.
+cd ..
+cd analyzers/dataframe
+# copy your CMakeLists.txt  (for safety)
+cp CMakeLists.txt my_old_CMakeLists.txt
+
+cp ~eperez/public/MarcoS/NewVertexing/CMakeLists_1.txt CMakeLists.txt
+
+# Edit CMakeLists.txt and add some MyStuff.h, in case you are compiling
+# some code of yours, MyStuff, within FCCAnalyses (see ROOT_GENERATE_DICTIONARY)
+
+cd ../..
+cp ~eperez/public/MarcoS/NewVertexing/CMakeLists_2.txt CMakeLists.txt
+
+cd analyzers/dataframe
+cp ~eperez/public/MarcoS/NewVertexing/VertexFitterSimple.* ./.
+cd ../..
+
+# compile:
+mkdir build install
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX=../install
+make install
+cd ..
+
+
+3. Analysis code
+================
+
+Go to your FCCAnalyses area.
+
+cd analyzers/dataframe
+cp ~eperez/public/MarcoS/NewVertexing/ana_Bs2DsK.* ./.
+
+# Edit CMakeLists.txt and add ana_Bs2DsK.h to ROOT_GENERATE_DICTIONARY
+
+# compile again:
+
+cd .././build
+make install
+cd ..
+
+
+# Test the example :
+
+# Go to your testing area.
+
+cp ~eperez/public/MarcoS/NewVertexing/analysis_Bs2DsK_VertexMore_forMarco.py ./.
+
+
+4. When you run again later :
+=============================
+
+go to your FCCAnalyses area:
+
+./source ./setup.sh
+
+Overwrite the DELPHES environment variable, to pick up your local version :
+
+Go to your local DELPHES directory and do :
+
+export LD_LIBRARY_PATH=$PWD/install/lib:$LD_LIBRARY_PATH
+export CMAKE_PREFIX_PATH=$PWD/install:$CMAKE_PREFIX_PATH
+export DELPHES_DIR=$PWD/install
+
+go back to your FCCAnalyses area
+
+
+
+
+
+
