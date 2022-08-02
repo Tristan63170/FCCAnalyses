@@ -155,29 +155,70 @@ class analysis():
 
                # the daughters from the tau-
                .Define("TauMinusIndex",  " if ( Bd2KstTauTau_indices.size() > 0) return Bd2KstTauTau_indices[2];  else return -1;")
-               .Define("Tau2Pions_indices",  " FCCAnalyses::MCParticle::get_indices_ExclusiveDecay_MotherByIndex( TauMinusIndex,  {16, -211, 211, -211  }, true, Particle, Particle1)" )
+               .Define("TauM2Pions_indices",  " FCCAnalyses::MCParticle::get_indices_ExclusiveDecay_MotherByIndex( TauMinusIndex,  {16, -211, 211, -211  }, true, Particle, Particle1)" )
+               # add radiative tau version with a photon
+               .Define("TauM2Pions_indices_rad",  " FCCAnalyses::MCParticle::get_indices_ExclusiveDecay_MotherByIndex( TauMinusIndex,  {16, -211, 211, -211, 22  }, true, Particle, Particle1)" )
 
                # RecoParticles associated with the pions from the tau decau
-               .Define("TaumRecoParticles",   " FCCAnalyses::ReconstructedParticle2MC::selRP_matched_to_list( Tau2Pions_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
+               .Define("TaumRecoParticles",   " FCCAnalyses::ReconstructedParticle2MC::selRP_matched_to_list( TauM2Pions_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
+               .Define("TaumRecoParticles_rad",   " FCCAnalyses::ReconstructedParticle2MC::selRP_matched_to_list( TauM2Pions_indices_rad, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
                # the corresponding tracks - here, dummy particles, if any, are removed
                .Define("TaumTracks",   "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK( TaumRecoParticles, EFlowTrack_1)" )
-
+               .Define("TaumTracks_rad",   "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK( TaumRecoParticles_rad, EFlowTrack_1)" )
+               
                # number of tracks used to reconstruct the Taum vertex
                .Define("n_TaumTracks", "FCCAnalyses::ReconstructedParticle2Track::getTK_n( TaumTracks )")
+               .Define("n_TaumTracks_rad", "FCCAnalyses::ReconstructedParticle2Track::getTK_n( TaumTracks_rad )")
 
                # Reco'ed decay vertex of the Taum
                .Define("TaumVertexObject",  "FCCAnalyses::VertexFitterSimple::VertexFitter_Tk( 3, TaumTracks)" )
+               .Define("TaumVertexObject_rad",  "FCCAnalyses::VertexFitterSimple::VertexFitter_Tk( 3, TaumTracks_rad)" )#3 or 4 here ?
                .Define("TaumVertex",  "FCCAnalyses::VertexingUtils::get_VertexData( TaumVertexObject ) ")
+               .Define("TaumVertex_rad",  "FCCAnalyses::VertexingUtils::get_VertexData( TaumVertexObject_rad ) ")
 
                # MC decay vertex of the Taum:
                # first, get one of the pions from the tau decay ( 0 = the mother tau, 1 = the nu, 2 = a pion)
-               .Define("PiFromTaum",  "selMC_leg(2) ( Tau2Pions_indices , Particle )")
+               .Define("PiFromTaum",  "selMC_leg(2) ( TauM2Pions_indices , Particle )")
+               .Define("PiFromTaum_rad",  "selMC_leg(2) ( TauM2Pions_indices_rad , Particle )")
                # MC production vertex of this pion:
                .Define("TaumMCDecayVertex",  " FCCAnalyses::MCParticle::get_vertex( PiFromTaum )")
-
+               .Define("TaumMCDecayVertex_rad",  " FCCAnalyses::MCParticle::get_vertex( PiFromTaum_rad )")
 
                # -------------------------------------------------------------------------------------------------------
+               # ----------   the pions from the tau+ decay                                                                                                                                                           
 
+               # the daughters from the tau+                                                                                                                                                                          
+               .Define("TauPlusIndex",  " if ( Bd2KstTauTau_indices.size() > 0) return Bd2KstTauTau_indices[3];  else return -1;")
+               .Define("TauP2Pions_indices",  " FCCAnalyses::MCParticle::get_indices_ExclusiveDecay_MotherByIndex( TauPlusIndex,  {-16, 211, -211, 211  }, true, Particle, Particle1)" )
+               # add radiative tau version with a photon 
+               .Define("TauP2Pions_indices_rad",  " FCCAnalyses::MCParticle::get_indices_ExclusiveDecay_MotherByIndex( TauPlusIndex,  {-16, 211, -211, 211, 22  }, true, Particle, Particle1)" )
+
+               # RecoParticles associated with the pions from the tau decau                                                                                                                                           
+               .Define("TaupRecoParticles",   " FCCAnalyses::ReconstructedParticle2MC::selRP_matched_to_list( TauP2Pions_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
+               .Define("TaupRecoParticles_rad",   " FCCAnalyses::ReconstructedParticle2MC::selRP_matched_to_list( TauP2Pions_indices_rad, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
+               # the corresponding tracks - here, dummy particles, if any, are removed                                                                                                                                
+               .Define("TaupTracks",   "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK( TaupRecoParticles, EFlowTrack_1)" )
+               .Define("TaupTracks_rad",   "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK( TaupRecoParticles_rad, EFlowTrack_1)" )
+               
+               # number of tracks used to reconstruct the Taup vertex                                                                                                                                                 
+               .Define("n_TaupTracks", "FCCAnalyses::ReconstructedParticle2Track::getTK_n( TaupTracks )")
+               .Define("n_TaupTracks_rad", "FCCAnalyses::ReconstructedParticle2Track::getTK_n( TaupTracks_rad )")
+
+               # Reco'ed decay vertex of the Taup                                                                                                                                                                     
+               .Define("TaupVertexObject",  "FCCAnalyses::VertexFitterSimple::VertexFitter_Tk( 3, TaupTracks)" )
+               .Define("TaupVertexObject_rad",  "FCCAnalyses::VertexFitterSimple::VertexFitter_Tk( 3, TaupTracks_rad)" )#3 or 4 here ?   
+               .Define("TaupVertex",  "FCCAnalyses::VertexingUtils::get_VertexData( TaupVertexObject ) ")
+               .Define("TaupVertex_rad",  "FCCAnalyses::VertexingUtils::get_VertexData( TaupVertexObject_rad ) ")
+
+               # MC decay vertex of the Taup:                                                                                                                                                                         
+               # first, get one of the pions from the tau decay ( 0 = the mother tau, 1 = the nu, 2 = a pion)                                                                                                         
+               .Define("PiFromTaup",  "selMC_leg(2) ( TauP2Pions_indices , Particle )")
+               .Define("PiFromTaup_rad",  "selMC_leg(2) ( TauP2Pions_indices_rad , Particle )")
+               # MC production vertex of this pion:                                                                                                                                                                   
+               .Define("TaupMCDecayVertex",  " FCCAnalyses::MCParticle::get_vertex( PiFromTaup )")
+               .Define("TaupMCDecayVertex_rad",  " FCCAnalyses::MCParticle::get_vertex( PiFromTaup_rad )")
+
+               # ------------------------------------------------------------------------------------------------------- 
 
         )
 
@@ -200,7 +241,16 @@ class analysis():
                 "KstVertex",
                 "TaumMCDecayVertex",
                 "n_TaumTracks",
-                "TaumVertex"
+                "TaumVertex",
+                "TaumMCDecayVertex_rad",
+                "n_TaumTracks_rad",
+                "TaumVertex_rad",
+                "TaupMCDecayVertex",
+                "n_TaupTracks",
+                "TaupVertex",
+                "TaupMCDecayVertex_rad",
+                "n_TaupTracks_rad",
+                "TaupVertex_rad"
 
                 ]:
             branchList.push_back(branchName)
