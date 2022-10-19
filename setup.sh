@@ -1,6 +1,6 @@
 if [ "${0}" != "${BASH_SOURCE}" ]; then
   if [ -z "${KEY4HEP_STACK}" ]; then
-    source /cvmfs/fcc.cern.ch/sw/latest/setup.sh
+    source /cvmfs/sw.hsf.org/spackages6/key4hep-stack/2022-06-09/x86_64-centos7-gcc11.2.0-opt/pkhfu/setup.sh
   else
     echo "INFO: Key4hep stack already set up."
   fi
