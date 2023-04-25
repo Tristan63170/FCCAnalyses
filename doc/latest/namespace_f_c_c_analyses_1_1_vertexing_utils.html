@@ -141,6 +141,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aa350e993211d1c32caf5c5d81220755e"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#aa350e993211d1c32caf5c5d81220755e">get_VertexRecoParticlesInd</a> (<a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> TheVertex, const ROOT::VecOps::RVec&lt; edm4hep::ReconstructedParticleData &gt; &amp;reco)</td></tr>
 <tr class="memdesc:aa350e993211d1c32caf5c5d81220755e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the indices of the tracks fitted to that vertex, but now in the collection of RecoParticles.  <br /></td></tr>
 <tr class="separator:aa350e993211d1c32caf5c5d81220755e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac595a268ad940b393fceec11742ad881"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#ac595a268ad940b393fceec11742ad881">get_VerticesRecoParticlesInd</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; TheVertex, const ROOT::VecOps::RVec&lt; edm4hep::ReconstructedParticleData &gt; &amp;reco)</td></tr>
+<tr class="separator:ac595a268ad940b393fceec11742ad881"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b3adc1ebe05847383f33694264fe193"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a0b3adc1ebe05847383f33694264fe193">get_TracksRecoParticlesInd</a> (ROOT::VecOps::RVec&lt; edm4hep::TrackState &gt; tracks, ROOT::VecOps::RVec&lt; int &gt; RP_PV_indices, ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; int &gt; &gt; RP_SV_indices)</td></tr>
+<tr class="separator:a0b3adc1ebe05847383f33694264fe193"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fab62e78096ec5b58256889627bdd46"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a1fab62e78096ec5b58256889627bdd46">get_nTracks</a> (ROOT::VecOps::RVec&lt; edm4hep::TrackState &gt; tracks)</td></tr>
 <tr class="memdesc:a1fab62e78096ec5b58256889627bdd46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of tracks in a given track collection.  <br /></td></tr>
 <tr class="separator:a1fab62e78096ec5b58256889627bdd46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +194,18 @@ Functions</h2></td></tr>
 <tr class="memitem:a9fa187c3a9a39495fc5c6dd594dcf3b8"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a9fa187c3a9a39495fc5c6dd594dcf3b8">get_chi2_SV</a> (<a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_v0.html">FCCAnalysesV0</a> SV)</td></tr>
 <tr class="memdesc:a9fa187c3a9a39495fc5c6dd594dcf3b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return chi2 of all reconstructed V0s.  <br /></td></tr>
 <tr class="separator:a9fa187c3a9a39495fc5c6dd594dcf3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2db791d594f1d53258f288601bc8b20"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; float &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#ac2db791d594f1d53258f288601bc8b20">get_updated_momentum_at_vertex_x</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
+<tr class="separator:ac2db791d594f1d53258f288601bc8b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f1d335fc815d739fd96fc8c75e42371"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; float &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a7f1d335fc815d739fd96fc8c75e42371">get_updated_momentum_at_vertex_y</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
+<tr class="separator:a7f1d335fc815d739fd96fc8c75e42371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6547210a50c797643d118c1c083cd472"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; float &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a6547210a50c797643d118c1c083cd472">get_updated_momentum_at_vertex_z</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
+<tr class="separator:a6547210a50c797643d118c1c083cd472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abecbccfe24da4faedc49af2645429b3f"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#abecbccfe24da4faedc49af2645429b3f">get_vertex_x</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
+<tr class="separator:abecbccfe24da4faedc49af2645429b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc09da43136472cfb28f3884a5107cee"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#afc09da43136472cfb28f3884a5107cee">get_vertex_y</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
+<tr class="separator:afc09da43136472cfb28f3884a5107cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0446bd04ed206d4c8e08d8968efa0e58"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a0446bd04ed206d4c8e08d8968efa0e58">get_vertex_z</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
+<tr class="separator:a0446bd04ed206d4c8e08d8968efa0e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cb48509d18b5c96bedd10f87eda0d8b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a5cb48509d18b5c96bedd10f87eda0d8b">get_n_SV</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
 <tr class="memdesc:a5cb48509d18b5c96bedd10f87eda0d8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Passing a vector of <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html" title="Structure to keep useful track information that is related to the vertex.">FCCAnalysesVertex</a> instead of <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_v0.html" title="Structure to keep useful information that is related to the V0.">FCCAnalysesV0</a> Return the number of reconstructed SVs.  <br /></td></tr>
 <tr class="separator:a5cb48509d18b5c96bedd10f87eda0d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -317,6 +333,8 @@ Functions</h2></td></tr>
 <tr class="separator:a5f43b223d06744303442542fc44809ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d9a8e8d87409a8f6d22cbee921e0d16"><td class="memItemLeft" align="right" valign="top">TMatrixDSym&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a2d9a8e8d87409a8f6d22cbee921e0d16">CovToACTS</a> (TMatrixDSym Cov, TVectorD Par)</td></tr>
 <tr class="separator:a2d9a8e8d87409a8f6d22cbee921e0d16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a715b821e62a04e51fef575ff1898bf66"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#a715b821e62a04e51fef575ff1898bf66">get_chi2</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices)</td></tr>
+<tr class="separator:a715b821e62a04e51fef575ff1898bf66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9f6e46b2c7bdc3576180b52b20ada52"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#af9f6e46b2c7bdc3576180b52b20ada52">get_relTheta_SV</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices, fastjet::PseudoJet jet)</td></tr>
 <tr class="separator:af9f6e46b2c7bdc3576180b52b20ada52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2242582200e5fd506468182328d3556"><td class="memItemLeft" align="right" valign="top">ROOT::VecOps::RVec&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_f_c_c_analyses_1_1_vertexing_utils.html#ab2242582200e5fd506468182328d3556">get_relPhi_SV</a> (ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt; vertices, fastjet::PseudoJet jet)</td></tr>
@@ -575,6 +593,24 @@ Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a715b821e62a04e51fef575ff1898bf66" name="a715b821e62a04e51fef575ff1898bf66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a715b821e62a04e51fef575ff1898bf66">&#9670;&#160;</a></span>get_chi2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; float &gt; FCCAnalyses::VertexingUtils::get_chi2 </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2033,6 +2069,148 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0b3adc1ebe05847383f33694264fe193" name="a0b3adc1ebe05847383f33694264fe193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b3adc1ebe05847383f33694264fe193">&#9670;&#160;</a></span>get_TracksRecoParticlesInd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; int &gt; FCCAnalyses::VertexingUtils::get_TracksRecoParticlesInd </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; edm4hep::TrackState &gt;&#160;</td>
+          <td class="paramname"><em>tracks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>RP_PV_indices</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; int &gt; &gt;&#160;</td>
+          <td class="paramname"><em>RP_SV_indices</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac2db791d594f1d53258f288601bc8b20" name="ac2db791d594f1d53258f288601bc8b20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2db791d594f1d53258f288601bc8b20">&#9670;&#160;</a></span>get_updated_momentum_at_vertex_x()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; float &gt; &gt; FCCAnalyses::VertexingUtils::get_updated_momentum_at_vertex_x </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7f1d335fc815d739fd96fc8c75e42371" name="a7f1d335fc815d739fd96fc8c75e42371"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f1d335fc815d739fd96fc8c75e42371">&#9670;&#160;</a></span>get_updated_momentum_at_vertex_y()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; float &gt; &gt; FCCAnalyses::VertexingUtils::get_updated_momentum_at_vertex_y </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6547210a50c797643d118c1c083cd472" name="a6547210a50c797643d118c1c083cd472"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6547210a50c797643d118c1c083cd472">&#9670;&#160;</a></span>get_updated_momentum_at_vertex_z()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; float &gt; &gt; FCCAnalyses::VertexingUtils::get_updated_momentum_at_vertex_z </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abecbccfe24da4faedc49af2645429b3f" name="abecbccfe24da4faedc49af2645429b3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abecbccfe24da4faedc49af2645429b3f">&#9670;&#160;</a></span>get_vertex_x()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; float &gt; FCCAnalyses::VertexingUtils::get_vertex_x </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afc09da43136472cfb28f3884a5107cee" name="afc09da43136472cfb28f3884a5107cee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc09da43136472cfb28f3884a5107cee">&#9670;&#160;</a></span>get_vertex_y()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; float &gt; FCCAnalyses::VertexingUtils::get_vertex_y </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0446bd04ed206d4c8e08d8968efa0e58" name="a0446bd04ed206d4c8e08d8968efa0e58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0446bd04ed206d4c8e08d8968efa0e58">&#9670;&#160;</a></span>get_vertex_z()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; float &gt; FCCAnalyses::VertexingUtils::get_vertex_z </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>vertices</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a4dad66416e90d010e78de67ac3283f15" name="a4dad66416e90d010e78de67ac3283f15"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4dad66416e90d010e78de67ac3283f15">&#9670;&#160;</a></span>get_VertexData() <span class="overload">[1/3]</span></h2>
 
@@ -2209,6 +2387,34 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ac595a268ad940b393fceec11742ad881" name="ac595a268ad940b393fceec11742ad881"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac595a268ad940b393fceec11742ad881">&#9670;&#160;</a></span>get_VerticesRecoParticlesInd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ROOT::VecOps::RVec&lt; ROOT::VecOps::RVec&lt; int &gt; &gt; FCCAnalyses::VertexingUtils::get_VerticesRecoParticlesInd </td>
+          <td>(</td>
+          <td class="paramtype">ROOT::VecOps::RVec&lt; <a class="el" href="struct_f_c_c_analyses_1_1_vertexing_utils_1_1_f_c_c_analyses_vertex.html">FCCAnalysesVertex</a> &gt;&#160;</td>
+          <td class="paramname"><em>TheVertex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ROOT::VecOps::RVec&lt; edm4hep::ReconstructedParticleData &gt; &amp;&#160;</td>
+          <td class="paramname"><em>reco</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a5f43b223d06744303442542fc44809ac" name="a5f43b223d06744303442542fc44809ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5f43b223d06744303442542fc44809ac">&#9670;&#160;</a></span>ParToACTS()</h2>
 
@@ -2335,7 +2541,7 @@ Functions</h2></td></tr>
 <!-- HTML footer for doxygen 1.8.15-->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 18 2023 11:19:10 for FCCAnalyses by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 25 2023 10:58:53 for FCCAnalyses by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.9.6
 </small></address>
