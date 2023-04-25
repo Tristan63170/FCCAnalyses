@@ -107,6 +107,13 @@ namespace VertexingUtils{
   ROOT::VecOps::RVec<int> get_VertexRecoParticlesInd( FCCAnalysesVertex TheVertex, 
 						      const ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>& reco );
  
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<int>> get_VerticesRecoParticlesInd( ROOT::VecOps::RVec<FCCAnalysesVertex> TheVertex, 
+ 						                                          const ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>& reco );
+                                                      
+  ROOT::VecOps::RVec<int> get_TracksRecoParticlesInd( ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
+                                                      ROOT::VecOps::RVec<int> RP_PV_indices,
+                                                      ROOT::VecOps::RVec<ROOT::VecOps::RVec<int>> RP_SV_indices);
+
   /// Return the number of tracks in a given track collection
   int get_nTracks(ROOT::VecOps::RVec<edm4hep::TrackState> tracks);
 
@@ -180,6 +187,18 @@ namespace VertexingUtils{
 
   /// Return chi2 of all reconstructed V0s
   ROOT::VecOps::RVec<double> get_chi2_SV( FCCAnalysesV0 SV );
+
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> get_updated_momentum_at_vertex_x( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices );
+
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> get_updated_momentum_at_vertex_y( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices );
+
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> get_updated_momentum_at_vertex_z( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices );
+
+  ROOT::VecOps::RVec<float> get_vertex_x( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices );
+
+  ROOT::VecOps::RVec<float> get_vertex_y( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices );
+
+  ROOT::VecOps::RVec<float> get_vertex_z( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices );
 
   ///////////////////////////////////////////////////
 
@@ -321,3 +340,5 @@ namespace VertexingUtils{
 
 }//end NS FCCAnalyses
 #endif
+
+

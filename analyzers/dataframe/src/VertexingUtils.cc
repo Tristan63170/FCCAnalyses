@@ -363,6 +363,150 @@ ROOT::VecOps::RVec<int> get_VertexRecoParticlesInd(
   return result;
 }
 
+ROOT::VecOps::RVec<ROOT::VecOps::RVec<int>> get_VerticesRecoParticlesInd( ROOT::VecOps::RVec<FCCAnalysesVertex> TheVertex,
+ 					            const ROOT::VecOps::RVec<edm4hep::ReconstructedParticleData>& reco ) {
+
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<int>> result;
+  for (auto & vertices: TheVertex) {
+    int n_tracks = vertices.ntracks;
+    ROOT::VecOps::RVec<int> inner_result;
+    inner_result.reserve(n_tracks);
+    ROOT::VecOps::RVec<int> indices_tracks = vertices.reco_ind;
+    for (int i=0; i < indices_tracks.size(); i++) {
+        int tk_index = indices_tracks[i];
+        for ( int j=0; j < reco.size(); j++) {
+          auto & p = reco[j];
+          if ( p.tracks_begin == p.tracks_end ) continue;  
+          if ( p.tracks_begin == tk_index ) {
+          inner_result.push_back( j );
+          break;
+        }
+      }
+    }
+    result.push_back(inner_result);
+  }
+  return result;
+}
+
+
+
+ROOT::VecOps::RVec<int> get_TracksRecoParticlesInd( ROOT::VecOps::RVec<edm4hep::TrackState> tracks,
+                                                    ROOT::VecOps::RVec<int> RP_PV_indices,
+                                                    ROOT::VecOps::RVec<ROOT::VecOps::RVec<int>> RP_SV_indices) {
+
+  ROOT::VecOps::RVec<int> result;
+
+  ROOT::VecOps::RVec<int> flattened_RP_SV_indices;
+  for (int i = 0; i < RP_SV_indices.size(); i++) {
+    for (int j = 0; j < RP_SV_indices[i].size(); j++) {
+      flattened_RP_SV_indices.push_back(RP_SV_indices[i][j]);
+    }
+  }
+
+  for (int i_track = 0; i_track < tracks.size(); i_track++) {
+    bool break_loop = false;
+    for (int i_pv = 0; i_pv < RP_PV_indices.size(); i_pv++) {
+      if (i_track == RP_PV_indices[i_pv]) {
+        break_loop = true;
+      }
+      if (break_loop) break;
+    }
+    for (int i_sv = 0; i_sv < flattened_RP_SV_indices.size(); i_sv++) {
+      if (i_track == flattened_RP_SV_indices[i_sv]) {
+        break_loop = true;
+      }
+      if (break_loop) break;
+    }
+    if (break_loop == false) {
+      result.push_back(i_track);
+    }
+
+  }
+  return result;
+}
+
+
+ROOT::VecOps::RVec<float> get_chi2( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices ) {
+  ROOT::VecOps::RVec<float> result;
+  for (auto & TheVertex: vertices) {
+    for (unsigned int i = 0; i < TheVertex.reco_chi2.size(); i++){
+      result.push_back(TheVertex.reco_chi2.at(i));
+    }
+  }
+  return result;
+}
+
+
+ROOT::VecOps::RVec<float> get_vertex_x( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices ) {
+  ROOT::VecOps::RVec<float> result;
+  for (auto & TheVertex: vertices) {
+    result.push_back(TheVertex.vertex.position.x);
+  }
+  return result;
+}
+
+ROOT::VecOps::RVec<float> get_vertex_y( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices ) {
+  ROOT::VecOps::RVec<float> result;
+  for (auto & TheVertex: vertices) {
+    result.push_back(TheVertex.vertex.position.y);
+  }
+  return result;
+}
+
+
+ROOT::VecOps::RVec<float> get_vertex_z( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices ) {
+  ROOT::VecOps::RVec<float> result;
+  for (auto & TheVertex: vertices) {
+    result.push_back(TheVertex.vertex.position.z);
+  }
+  return result;
+}
+
+
+ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> get_updated_momentum_at_vertex_x( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices ) {
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> result;
+  for (auto & TheVertex: vertices) {
+    int n_tracks = TheVertex.ntracks;
+    ROOT::VecOps::RVec<float> inner_result;
+    inner_result.reserve(n_tracks);
+    for (int i = 0; i < n_tracks; i++) {
+      inner_result.push_back(TheVertex.updated_track_momentum_at_vertex.at(i).X());
+    }
+    result.push_back(inner_result);
+  }
+  return result;
+}
+
+ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> get_updated_momentum_at_vertex_y( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices ) {
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> result;
+  for (auto & TheVertex: vertices) {
+    int n_tracks = TheVertex.ntracks;
+    ROOT::VecOps::RVec<float> inner_result;
+    inner_result.reserve(n_tracks);
+    for (int i = 0; i < n_tracks; i++) {
+      inner_result.push_back(TheVertex.updated_track_momentum_at_vertex.at(i).Y());
+    }
+    result.push_back(inner_result);
+  }
+  return result;
+}
+
+ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> get_updated_momentum_at_vertex_z( ROOT::VecOps::RVec<FCCAnalysesVertex> vertices ) {
+  ROOT::VecOps::RVec<ROOT::VecOps::RVec<float>> result;
+  for (auto & TheVertex: vertices) {
+    int n_tracks = TheVertex.ntracks;
+    ROOT::VecOps::RVec<float> inner_result;
+    inner_result.reserve(n_tracks);
+    for (int i = 0; i < n_tracks; i++) {
+      inner_result.push_back(TheVertex.updated_track_momentum_at_vertex.at(i).Z());
+    }
+    result.push_back(inner_result);
+  }
+  return result;
+}
+
+
+
 TVectorD ParToACTS(TVectorD Par) {
 
   TVectorD pACTS(6); // Return vector
@@ -1474,3 +1618,5 @@ get_invM_V0(ROOT::VecOps::RVec<double> invM, ROOT::VecOps::RVec<int> nSV_jet) {
 } // namespace VertexingUtils
 
 } // namespace FCCAnalyses
+
+
