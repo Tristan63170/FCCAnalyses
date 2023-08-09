@@ -11,7 +11,9 @@ if [ "${0}" != "${BASH_SOURCE}" ]; then
     echo "      ${STACK_PATH}"
     source ${STACK_PATH}
   else
-    source /cvmfs/fcc.cern.ch/sw/latest/setup.sh
+    #source /cvmfs/fcc.cern.ch/sw/latest/setup.sh
+    #in case of new release that cause conflict you have to source:
+    source /cvmfs/sw.hsf.org/spackages7/key4hep-stack/2023-04-08/x86_64-centos7-gcc11.2.0-opt/urwcv/setup.sh
   fi
 
   export PYTHONPATH=${LOCAL_DIR}:${PYTHONPATH}

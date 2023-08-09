@@ -1,0 +1,200 @@
+processList = {'p8_ee_Zbb_ecm91_EvtGen_Bd2KstarTauTau':{'fraction':0.1, 'chunks':1,'output':'sig_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsDsKstarDs2Taunu':{'fraction':0.4, 'chunks':4,'output':'Bd2KstDsDsDs2TauNu_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsDsKstarDs2pipipipi0v2':{'fraction':0.4, 'chunks':4,'output':'Bd2KstDsDsDs2pipipipi0_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsDsKstarDs2pipipipi0pi0v2':{'fraction':0.4, 'chunks':4,'output':'Bd2KstDsDsDs2pipipipi0pi0_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsDsKstarDs2TaunuDs2pipipipi0v2':{'fraction':0.2, 'chunks':2,'output':'Bd2KstDsDsDs2TaunuDs2pipipipi0_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsDsKstarDs2TaunuDs2pipipipi0v2ChargeConjugation':{'fraction':0.2, 'chunks':2,'output':'Bd2KstDsDsDs2TaunuDs2pipipipi0CC_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsKstarTauNuDs2TauNu':{'fraction':0.4, 'chunks':4,'output':'Bd2KstDsTauNuDs2TauNu_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsstarDsKstarDs2TaunuDsstar2Dsgamma':{'fraction':0.4, 'chunks':4,'output':'Bd2KstDsstDsDsst2DsgammaDs2Taunu_events'},
+
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsDsKstarDs2TaunuDs2pipipipi0pi0':{'fraction':0.2, 'chunks':2,'output':'Bd2DsDsKstarDs2TaunuDs2pipipipi0pi0_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsDsKstarDs2TaunuDs2pipipipi0pi0ChargeConjugation':{'fraction':0.2, 'chunks':2,'output':'Bd2DsDsKstarDs2TaunuDs2pipipipi0pi0CC_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsstarKstarTauNuDs2pipipipi0pi0':{'fraction':0.4, 'chunks':4,'output':'Bd2DsstarKstarTauNuDs2pipipipi0pi0_events'},
+'p8_ee_Zbb_ecm91_EvtGen_Bd2DsstarDsKstarDs2PiPiPiPi0Pi0Dsstar2Dsgamma':{'fraction':0.4, 'chunks':4,'output':'Bd2DsstarDsKstarDs2PiPiPiPi0Pi0Dsstar2Dsgamma_events'}}
+
+#Mandatory: Production tag when running over EDM4Hep centrally produced events, this points to the yaml files for getting sample statistics
+prodTag     = "FCCee/winter2023/IDEA"
+
+#Optional: output directory, default is local running directory
+outputDir   = "/afs/cern.ch/work/t/tmiralle/public/FCCAnalyses/outputs_winter2023/"
+
+#Optional: analysisName, default is ""
+#analysisName = "My Analysis"
+
+#Optional: ncpus, default is 4
+nCPUS       = 4
+
+#Optional running on HTCondor, default is False
+runBatch    = True
+
+#Optional batch queue name when running on HTCondor, default is workday
+batchQueue = "workday"
+
+#Optional computing account when running on HTCondor, default is group_u_FCC.local_gen
+compGroup = "group_u_LHCB.u_z5"
+
+#Optional test file
+#testFile ="root://eospublic.cern.ch//eos/experiment/fcc/ee/generation/DelphesEvents/pre_fall2022/IDEA/p8_ee_Zbb_ecm91_EvtGen_Bd2KstarTauTau/events_002099652.root"
+
+#Mandatory: RDFanalysis class where the use defines the operations on the TTree
+class RDFanalysis():
+
+    #__________________________________________________________
+    #Mandatory: analysers funtion to define the analysers to process, please make sure you return the last dataframe, in this example it is df2
+    def analysers(df):
+        df2 = (
+            df
+            .Alias("MCRecoAssociations0", "MCRecoAssociations#0.index")
+               .Alias("MCRecoAssociations1", "MCRecoAssociations#1.index")
+               .Alias("Particle0", "Particle#0.index")
+                #.Filter("filter_pdgID(541, true)(Particle)==true")
+                #.Filter("filter_pdgID(541, true)(Particle)==false")
+                # .Filter("(filter_pdgID(521, false)(Particle)==true && filter_pdgID(-521, false)(Particle)==false) || (filter_pdgID(521, false)(Particle)==false && filter_pdgID(-521, false)(Particle)==true)")
+               
+               .Define("MC_px",         "FCCAnalyses::MCParticle::get_px(Particle)")
+               .Define("MC_py",         "FCCAnalyses::MCParticle::get_py(Particle)")
+               .Define("MC_pz",         "FCCAnalyses::MCParticle::get_pz(Particle)")
+               .Define("MC_p",          "FCCAnalyses::MCParticle::get_p(Particle)")
+               .Define("MC_e",          "FCCAnalyses::MCParticle::get_e(Particle)")
+               .Define("MC_pdg",        "FCCAnalyses::MCParticle::get_pdg(Particle)")
+               .Define("MC_charge",     "FCCAnalyses::MCParticle::get_charge(Particle)")
+               .Define("MC_mass",       "FCCAnalyses::MCParticle::get_mass(Particle)")
+               .Define("MC_status",     "FCCAnalyses::MCParticle::get_genStatus(Particle)")
+               .Define("MC_vertex_x",   "FCCAnalyses::MCParticle::get_vertex_x(Particle)")
+               .Define("MC_vertex_y",   "FCCAnalyses::MCParticle::get_vertex_y(Particle)")
+               .Define("MC_vertex_z",   "FCCAnalyses::MCParticle::get_vertex_z(Particle)")
+
+               ##.Define("MC_PV","FCCAnalyses::MCParticle::get_EventPrimaryVertex(MC_status)")
+
+               #Rajout
+               #.Define("MC_parent_pdg",        "MCParticle::get_pdg(Particle0)")
+               #.Define("MC_parent_index", "Particle0")
+               #.Define('MC_index',            "ReconstructedParticle2MC::getRP2MC_index(MCRecoAssociations1,MCRecoAssociations1,Particle)")
+               
+               .Define("RP_p",          "FCCAnalyses::ReconstructedParticle::get_p(ReconstructedParticles)")
+               .Define("RP_e",          "FCCAnalyses::ReconstructedParticle::get_e(ReconstructedParticles)")
+               .Define("RP_px",         "FCCAnalyses::ReconstructedParticle::get_px(ReconstructedParticles)")
+               .Define("RP_py",         "FCCAnalyses::ReconstructedParticle::get_py(ReconstructedParticles)")
+               .Define("RP_pz",         "FCCAnalyses::ReconstructedParticle::get_pz(ReconstructedParticles)")
+               .Define("RP_charge",     "FCCAnalyses::ReconstructedParticle::get_charge(ReconstructedParticles)")
+               .Define("RP_mass",       "FCCAnalyses::ReconstructedParticle::get_mass(ReconstructedParticles)")
+               .Define('RP_index',  "ROOT::VecOps::RVec<int> v; for(size_t i=0; i<ReconstructedParticles.size(); i++) v.push_back(i);return v;")
+               #.Define("RP_TRK_D0",      "getRP2TRK_D0(ReconstructedParticles, EFlowTrack_1)")
+               #.Define("RP_TRK_Z0",      "getRP2TRK_Z0(ReconstructedParticles, EFlowTrack_1)")
+
+               .Define('RP_MC_index',            "FCCAnalyses::ReconstructedParticle2MC::getRP2MC_index(MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles)") 
+               .Define('RP_MC_parentindex',      "FCCAnalyses::MCParticle::get_parentid(RP_MC_index,Particle, Particle0)")
+               .Define('RP_MC_grandparentindex', "FCCAnalyses::MCParticle::get_parentid(RP_MC_parentindex,Particle, Particle0)")
+               .Define('RP_MC_greatgrandparentindex', "FCCAnalyses::MCParticle::get_parentid(RP_MC_grandparentindex,Particle, Particle0)")
+               
+               .Define('MC_index',  "ROOT::VecOps::RVec<int> v; for(size_t i=0; i<Particle.size(); i++) v.push_back(i);return v;")
+               .Define('MC_parentindex',      "FCCAnalyses::MCParticle::get_parentid(MC_index,Particle, Particle0)")
+               .Define('MC_grandparentindex', "FCCAnalyses::MCParticle::get_parentid(MC_parentindex,Particle, Particle0)")
+               .Define('MC_greatgrandparentindex', "FCCAnalyses::MCParticle::get_parentid(MC_grandparentindex,Particle, Particle0)")
+               
+               #Obtain parents tuples
+               #.Define('ParentsMC', "MCParticle::get(Particle0, Particle)")
+               
+
+               .Define('EVT_thrust',      'FCCAnalyses::Algorithms::minimize_thrust("Minuit2","Migrad")(RP_px, RP_py, RP_pz)')
+               .Define('EVT_thrust_val',  'EVT_thrust.at(0)')
+               .Define('EVT_thrust_x',    'EVT_thrust.at(1)')
+               .Define('EVT_thrust_x_err','EVT_thrust.at(2)')
+               .Define('EVT_thrust_y',    'EVT_thrust.at(3)')
+               .Define('EVT_thrust_y_err','EVT_thrust.at(4)')
+               .Define('EVT_thrust_z',    'EVT_thrust.at(5)')
+               .Define('EVT_thrust_z_err','EVT_thrust.at(6)')
+               
+               .Define('EVT_sphericity',      'FCCAnalyses::Algorithms::minimize_sphericity("Minuit2","Migrad")(RP_px, RP_py, RP_pz)')
+               .Define('EVT_sphericity_val',  'EVT_sphericity.at(0)')
+               .Define('EVT_sphericity_x',    'EVT_sphericity.at(1)')
+               .Define('EVT_sphericity_x_err','EVT_sphericity.at(2)')
+               .Define('EVT_sphericity_y',    'EVT_sphericity.at(3)')
+               .Define('EVT_sphericity_y_err','EVT_sphericity.at(4)')
+               .Define('EVT_sphericity_z',    'EVT_sphericity.at(5)')
+               .Define('EVT_sphericity_z_err','EVT_sphericity.at(6)')
+
+               .Define('RP_thrustangle',      'FCCAnalyses::Algorithms::getAxisCosTheta(EVT_thrust, RP_px, RP_py, RP_pz)')
+               .Define('RP_sphericityangle',  'FCCAnalyses::Algorithms::getAxisCosTheta(EVT_sphericity, RP_px, RP_py, RP_pz)')
+               
+               .Define('EVT_thrusthemis0_q_kappa1',  'FCCAnalyses::Algorithms::getAxisCharge(0, 1)(RP_thrustangle, RP_charge, RP_px, RP_py, RP_pz)')
+               .Define('EVT_thrusthemis1_q_kappa1',  'FCCAnalyses::Algorithms::getAxisCharge(1, 1)(RP_thrustangle, RP_charge, RP_px, RP_py, RP_pz)')
+               .Define('EVT_thrusthemis0_n',         'FCCAnalyses::Algorithms::getAxisN(0)(RP_thrustangle, RP_charge)')
+               .Define('EVT_thrusthemis1_n',         'FCCAnalyses::Algorithms::getAxisN(1)(RP_thrustangle, RP_charge)')
+               
+               .Define('EVT_thrusthemis0_e',         'FCCAnalyses::Algorithms::getAxisEnergy(0)(RP_thrustangle, RP_charge, RP_e)')
+               .Define('EVT_thrusthemis1_e',         'FCCAnalyses::Algorithms::getAxisEnergy(1)(RP_thrustangle, RP_charge, RP_e)')
+               .Define('EVT_thrustEmax_E','EVT_thrusthemis0_e.at(0)')
+               .Define('EVT_thrustEmin_E','EVT_thrusthemis1_e.at(0)')
+
+               .Define('EVT_thrutshemis0_ncharged',  'EVT_thrusthemis0_n.at(1)')
+               .Define('EVT_thrutshemis0_nneutral',  'EVT_thrusthemis0_n.at(2)')
+               .Define('EVT_thrutshemis0_echarged',  'EVT_thrusthemis0_e.at(1)')
+               .Define('EVT_thrutshemis0_eneutral',  'EVT_thrusthemis0_e.at(2)')
+               .Define('EVT_thrutshemis1_ncharged',  'EVT_thrusthemis1_n.at(1)')
+               .Define('EVT_thrutshemis1_nneutral',  'EVT_thrusthemis1_n.at(2)')
+               .Define('EVT_thrutshemis1_echarged',  'EVT_thrusthemis1_e.at(1)')
+               .Define('EVT_thrutshemis1_eneutral',  'EVT_thrusthemis1_e.at(2)')
+
+               .Define('EVT_thrutshemis_emax',  'if (EVT_thrusthemis0_e.at(0)>EVT_thrusthemis1_e.at(0)) return EVT_thrusthemis0_e.at(0); else return EVT_thrusthemis1_e.at(0);')
+               .Define('EVT_thrutshemis_emin',  'if (EVT_thrusthemis0_e.at(0)>EVT_thrusthemis1_e.at(0)) return EVT_thrusthemis1_e.at(0); else return EVT_thrusthemis0_e.at(0);')
+
+               .Define('EVT_Echarged_max', 'if (EVT_thrutshemis0_echarged>EVT_thrutshemis1_echarged) return EVT_thrutshemis0_echarged; else return EVT_thrutshemis1_echarged')
+               .Define('EVT_Echarged_min', 'if (EVT_thrutshemis0_echarged>EVT_thrutshemis1_echarged) return EVT_thrutshemis1_echarged; else return EVT_thrutshemis0_echarged')
+               .Define('EVT_Eneutral_max', 'if (EVT_thrutshemis0_eneutral>EVT_thrutshemis1_eneutral) return EVT_thrutshemis0_eneutral; else return EVT_thrutshemis1_eneutral')
+               .Define('EVT_Eneutral_min', 'if (EVT_thrutshemis0_eneutral>EVT_thrutshemis1_eneutral) return EVT_thrutshemis1_eneutral; else return EVT_thrutshemis0_eneutral')
+
+               .Define('EVT_Ncharged_max','if (EVT_thrutshemis0_ncharged>EVT_thrutshemis1_ncharged) return EVT_thrutshemis0_ncharged; else return EVT_thrutshemis1_ncharged')
+               .Define('EVT_Ncharged_min','if (EVT_thrutshemis0_ncharged>EVT_thrutshemis1_ncharged) return EVT_thrutshemis1_ncharged; else return EVT_thrutshemis0_ncharged')
+               .Define('EVT_Nneutral_max','if (EVT_thrutshemis0_nneutral>EVT_thrutshemis1_nneutral) return EVT_thrutshemis0_nneutral; else return EVT_thrutshemis1_nneutral')
+               .Define('EVT_Nneutral_min','if (EVT_thrutshemis0_nneutral>EVT_thrutshemis1_nneutral) return EVT_thrutshemis1_nneutral; else return EVT_thrutshemis0_nneutral')
+
+
+
+               #.Define("SelTracks","selTracks(0.,3.,0.,3.)( ReconstructedParticles, EFlowTrack_1)")
+               #.Define("nSeltracks",  "getRP_n(SelTracks)")
+               # Reconstruct the vertex from these tracks :
+               .Define("RP_thrusthemis0", "FCCAnalyses::ReconstructedParticle::sel_axis(0)(RP_thrustangle, ReconstructedParticles)")
+               .Define("RP_thrusthemis1", "FCCAnalyses::ReconstructedParticle::sel_axis(1)(RP_thrustangle, ReconstructedParticles)")
+               .Define("RP_thrusthemis_emax", "if (EVT_thrusthemis0_e.at(0)>EVT_thrusthemis1_e.at(0)) return RP_thrusthemis0; else return RP_thrusthemis1;")
+               .Define("RP_thrusthemis_emin", "if (EVT_thrusthemis0_e.at(0)<EVT_thrusthemis1_e.at(0)) return RP_thrusthemis0; else return RP_thrusthemis1;")
+               
+               .Define("RP_D0", "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK_D0(ReconstructedParticles,EFlowTrack_1)")
+               .Define("RP_Z0", "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK_Z0(ReconstructedParticles,EFlowTrack_1)")
+               .Define("RP_D0_sig", "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK_D0_sig(ReconstructedParticles,EFlowTrack_1)")
+               .Define("RP_Z0_sig", "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK_Z0_sig(ReconstructedParticles,EFlowTrack_1)")
+               
+               .Define("awk", "dummyLoader()")
+               #.Define("awk", "awkwardtest()")
+        )
+        return df2
+
+    #__________________________________________________________
+    #Mandatory: output function, please make sure you return the branchlist as a python list
+    def output():
+        branchList = [
+             "MC_px","MC_py","MC_pz","MC_p","MC_e","MC_pdg","MC_charge","MC_mass","MC_status","MC_vertex_x","MC_vertex_y","MC_vertex_z",
+            "MC_index","MC_parentindex","MC_grandparentindex","MC_greatgrandparentindex",##"MC_PV",#"ParentsMC",
+            #"MC_parent_index",#"MC_index", #"MC_parent_pdg",
+
+                "EVT_thrust_x","EVT_thrust_y","EVT_thrust_z","EVT_thrust_val","EVT_thrusthemis0_q_kappa1","EVT_thrusthemis1_q_kappa1",
+                "EVT_thrutshemis0_ncharged","EVT_thrutshemis1_ncharged","EVT_thrutshemis0_nneutral","EVT_thrutshemis1_nneutral",
+                "EVT_thrutshemis0_echarged","EVT_thrutshemis1_echarged","EVT_thrutshemis0_eneutral","EVT_thrutshemis1_eneutral",
+                "EVT_thrutshemis_emax","EVT_thrutshemis_emin",
+
+                "EVT_Echarged_max","EVT_Echarged_min","EVT_Eneutral_max","EVT_Eneutral_min","EVT_Ncharged_max","EVT_Ncharged_min","EVT_Nneutral_max","EVT_Nneutral_min",
+
+
+
+                "EVT_sphericity_x","EVT_sphericity_y","EVT_sphericity_z","EVT_sphericity_val",
+
+                "EVT_thrustEmax_E","EVT_thrustEmin_E",
+                
+                "RP_D0","RP_Z0","RP_D0_sig","RP_Z0_sig",
+                "RP_thrustangle","RP_sphericityangle","RP_p","RP_px","RP_py","RP_pz","RP_charge","RP_mass","RP_index","RP_e",
+
+                "RP_MC_index","RP_MC_parentindex","RP_MC_grandparentindex","RP_MC_greatgrandparentindex",
+            
+                "awk"
+        ]
+        return branchList
