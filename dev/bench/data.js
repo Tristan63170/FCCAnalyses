@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1682413462877,
+  "lastUpdate": 1691589298163,
   "repoUrl": "https://github.com/Tristan63170/FCCAnalyses",
   "entries": {
     "Benchmark": [
@@ -1032,6 +1032,72 @@ window.BENCHMARK_DATA = {
             "name": "nightly | Events processed per second: examples/FCCee/vertex_lcfiplus/analysis_V0.py",
             "value": 3.0078178736353545,
             "unit": "Evt/s"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "tristan.miralles@clermont.in2p3.fr",
+            "name": "Tristan Miralles",
+            "username": "Tristan63170"
+          },
+          "committer": {
+            "email": "tristan.miralles@clermont.in2p3.fr",
+            "name": "Tristan Miralles",
+            "username": "Tristan63170"
+          },
+          "distinct": true,
+          "id": "5848e1e32a3cce5bb06f0cfb042c6b1b5b1070e3",
+          "message": "FCCAnalyses version corresponding to the ANAnote results",
+          "timestamp": "2023-08-09T15:42:39+02:00",
+          "tree_id": "299f2004bdcc0b7c4781dc2442e4f851ef3d45fc",
+          "url": "https://github.com/Tristan63170/FCCAnalyses/commit/5848e1e32a3cce5bb06f0cfb042c6b1b5b1070e3"
+        },
+        "date": 1691589296293,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "nightly | Time spent running the analysis: examples/FCCee/weaver/analysis_inference.py",
+            "value": 41.96440267562866,
+            "unit": "Seconds",
+            "range": 10,
+            "extra": "Analysis path: examples/FCCee/weaver/analysis_inference.py"
+          },
+          {
+            "name": "nightly | Time spent running the analysis: case-studies/analysis_example/scripts/analysis_example.py",
+            "value": 9.760582685470581,
+            "unit": "Seconds",
+            "range": 10,
+            "extra": "Analysis path: case-studies/analysis_example/scripts/analysis_example.py"
+          },
+          {
+            "name": "nightly | Time spent running the analysis: examples/FCCee/higgs/mH-recoil/mumu/analysis_stage1.py",
+            "value": 12.404715299606323,
+            "unit": "Seconds",
+            "range": 10,
+            "extra": "Analysis path: examples/FCCee/higgs/mH-recoil/mumu/analysis_stage1.py"
+          },
+          {
+            "name": "nightly | Time spent running the analysis: examples/FCCee/flavour/Bc2TauNu/analysis_B2TauNu_truth.py",
+            "value": 17.077783823013306,
+            "unit": "Seconds",
+            "range": 10,
+            "extra": "Analysis path: examples/FCCee/flavour/Bc2TauNu/analysis_B2TauNu_truth.py"
+          },
+          {
+            "name": "nightly | Time spent running the analysis: examples/FCCee/test/jet_constituents.py",
+            "value": 11.657203674316406,
+            "unit": "Seconds",
+            "range": 10,
+            "extra": "Analysis path: examples/FCCee/test/jet_constituents.py"
+          },
+          {
+            "name": "nightly | Time spent running the analysis: examples/FCCee/vertex_lcfiplus/analysis_V0.py",
+            "value": 35.86557745933533,
+            "unit": "Seconds",
+            "range": 10,
+            "extra": "Analysis path: examples/FCCee/vertex_lcfiplus/analysis_V0.py"
           }
         ]
       }
