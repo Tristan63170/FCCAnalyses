@@ -2,7 +2,7 @@ var searchData=
 [
   ['algorithms_0',['Algorithms',['../namespace_f_c_c_analyses_1_1_algorithms.html',1,'FCCAnalyses']]],
   ['calontupleizer_1',['CaloNtupleizer',['../namespace_f_c_c_analyses_1_1_calo_ntupleizer.html',1,'FCCAnalyses']]],
-  ['fccanalyses_2',['FCCAnalyses',['../namespace_f_c_c_analyses.html',1,'FCCAnalyses'],['../index.html',1,'(Global Namespace)']]],
+  ['fccanalyses_2',['FCCAnalyses',['../namespace_f_c_c_analyses.html',1,'']]],
   ['fccanalysescomposite_3',['FCCAnalysesComposite',['../struct_f_c_c_analyses_1_1my_utils_1_1_f_c_c_analyses_composite.html',1,'FCCAnalyses::myUtils']]],
   ['fccanalysescomposite2_4',['FCCAnalysesComposite2',['../struct_f_c_c_analyses_1_1my_utils_1_1_f_c_c_analyses_composite2.html',1,'FCCAnalyses::myUtils']]],
   ['fccanalysesjet_5',['FCCAnalysesJet',['../struct_jet_clustering_1_1_f_c_c_analyses_jet.html',1,'JetClustering']]],
