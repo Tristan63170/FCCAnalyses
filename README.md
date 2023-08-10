@@ -2,11 +2,11 @@
 
 The setup.sh file is set by default on the key4hep version use to produce ANAnote results.
 
-analysis_new.py is the analyzer to launch in order to produce the tuples used in the analysis scripts to produce all the variables needed (applying the reconstruction method, ...)
-analyzer_vertexing_SV-MCmatched.py is the analyzer to launch in order to produce .root for the IDEA resolution determination (with the scripts explain below)
-vertex_resolution_last.C is the script to run with ROOT in order to produce tuples ready for the IDEA resolution determination
-The smeared version to these two last scripts stand for doing the same thing for the IDEA with best tracks (e.g. IP or Omega)
-You will have to create the outputs folder for all the results.
+analysis_new.py is the analyzer to launch in order to produce the tuples used in the analysis scripts to produce all the variables needed (applying the reconstruction method, ...)  
+analyzer_vertexing_SV-MCmatched.py is the analyzer to launch in order to produce .root for the IDEA resolution determination (with the scripts explain below)  
+vertex_resolution_last.C is the script to run with ROOT in order to produce tuples ready for the IDEA resolution determination  
+The smeared version to these two last scripts stand for doing the same thing for the IDEA with best tracks (e.g. IP or Omega)  
+You will have to create the outputs folder for all the results.  
 
 
 # Usual FCCAnalyses README
