@@ -1,15 +1,15 @@
-processList = {'p8_ee_Zbb_ecm91_EvtGen_Bd2KstarTauTau':{
-    'fraction':1, 
-    'output':'p8_ee_Zbb_ecm91_EvtGen_Bd2KstarTauTau_output',
-    'chunks': 10}
+processList = {'p8_ee_Zbb_ecm91_EvtGen_Bd2KstarTauTau':{ 
+    'output':'better_singlehitReso_30pc'}
+
 } 
 # 1: 10^7
 # 0.1: 10^6
 # 0.01: 10^5
 # 0.001: 10^4
-prodTag     = "FCCee/winter2023/IDEA"
+#prodTag     = "FCCee/winter2023/IDEA"
 
-outputDir   = "/afs/cern.ch/work/t/tmiralle/public/FCCAnalyses/vertexing_output_smeared_d0z0_67"
+inputDir    = "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023_variations/IDEA/better_singlehitReso_30pc"
+outputDir   = "/afs/cern.ch/work/t/tmiralle/public/FCCAnalyses/vertexing_with_various_cards/vertexing_output_various_cards/better_singlehitReso_30pc"
 nCPUS       = 2
 runBatch    = True
 batchQueue  = "testmatch"
@@ -163,12 +163,9 @@ class RDFanalysis():
                 .Define('RP_MC_greatgrandparentindex', "FCCAnalyses::MCParticle::get_parentid(RP_MC_grandparentindex, Particle, Particle0)")
                 .Define('RP_MC_greatgreatgrandparentindex', "FCCAnalyses::MCParticle::get_parentid(RP_MC_greatgrandparentindex, Particle, Particle0)")
 
-                # Generate a new set of tracks, re-scaling the covariance matrix
-                # order of the scaling factors : smear_d0, smear_phi, smear_omega, smear_z0, smear_tlambda
-                # the boolean flag is for debugging
-                .Define("SmearedTracks", "FCCAnalyses::SmearObjects::SmearedTracks(0.67, 1.0, 1.0, 0.67, 1.0,false) (ReconstructedParticles, EFlowTrack_1, RP_MC_index, Particle)")
+
                 # Track information (and covariance matrix)
-                .Define("ReconstructedTracks",      "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK(ReconstructedParticles, SmearedTracks)")
+                .Define("ReconstructedTracks",      "FCCAnalyses::ReconstructedParticle2Track::getRP2TRK(ReconstructedParticles, EFlowTrack_1)")
 
                 # Build the PV
                 # My own solution
@@ -178,8 +175,8 @@ class RDFanalysis():
                 # .Define("IsPrimary_based_on_reco",  "VertexFitterSimple::IsPrimary_forTracks(ReconstructedTracks,  PrimaryTracks)")
 
                 # Cross-check for Emmanuel's method to retrieve the reco_indices
-                .Define("PrimaryTracks",              "VertexFitterSimple::get_PrimaryTracks( SmearedTracks, true, 4.5, 20e-3, 300, 0., 0., 0.)")
-                .Define("PrimaryVertex",              "VertexFitterSimple::VertexFitter_Tk(1, PrimaryTracks, SmearedTracks, true, 4.5, 20e-3, 300)")
+                .Define("PrimaryTracks",              "VertexFitterSimple::get_PrimaryTracks( EFlowTrack_1, true, 4.5, 20e-3, 300, 0., 0., 0.)")
+                .Define("PrimaryVertex",              "VertexFitterSimple::VertexFitter_Tk(1, PrimaryTracks, EFlowTrack_1, true, 4.5, 20e-3, 300)")
 
                 .Define("IsPrimary_based_on_reco",    "VertexFitterSimple::IsPrimary_forTracks(ReconstructedTracks, PrimaryTracks)")
                 # Derive quantities from the PV
@@ -278,7 +275,7 @@ class RDFanalysis():
                 .Define("KstRecoParticles",   " ReconstructedParticle2MC::selRP_matched_to_list( Kst2KPi_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
 
                 # the corresponding tracks - here, dummy particles, if any, are removed
-                .Define("KstTracks",  "ReconstructedParticle2Track::getRP2TRK( KstRecoParticles, SmearedTracks)" )
+                .Define("KstTracks",  "ReconstructedParticle2Track::getRP2TRK( KstRecoParticles, EFlowTrack_1)" )
 
                 # number of tracks used to reconstruct the Ds vertex
                 .Define("n_KstTracks", "ReconstructedParticle2Track::getTK_n( KstTracks )")
@@ -315,7 +312,7 @@ class RDFanalysis():
                 # RecoParticles associated with the pions from the tau decau
                 .Define("TaumRecoParticles",   " ReconstructedParticle2MC::selRP_matched_to_list( Taum2Pions_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
                 # the corresponding tracks - here, dummy particles, if any, are removed
-                .Define("TaumTracks",   "ReconstructedParticle2Track::getRP2TRK( TaumRecoParticles, SmearedTracks)" )
+                .Define("TaumTracks",   "ReconstructedParticle2Track::getRP2TRK( TaumRecoParticles, EFlowTrack_1)" )
 
                 # number of tracks used to reconstruct the Taum vertex
                 .Define("n_TaumTracks", "ReconstructedParticle2Track::getTK_n( TaumTracks )")
@@ -325,7 +322,7 @@ class RDFanalysis():
                 .Define("TaumVertex",  "VertexingUtils::get_VertexData( TaumVertexObject ) ")
                 
                 # MC decay vertex of the Taum:
-                # first, get one of the pions from the tau decay ( 0  = the nu, 1 = a pion)
+                # first, get one of the pions from the tau decay ( 0 = the nu, 1 = a pion)
                 .Define("PiFromTaum_MCindex", "return Taum2Pions_indices[1];")
                 .Define("PiFromTaum", "return Particle[ PiFromTaum_MCindex ] ;")
 
@@ -352,7 +349,7 @@ class RDFanalysis():
                 # RecoParticles associated with the pions from the tau decau
                 .Define("TaupRecoParticles",   " ReconstructedParticle2MC::selRP_matched_to_list( Taup2Pions_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
                 # the corresponding tracks - here, dummy particles, if any, are removed
-                .Define("TaupTracks",   "ReconstructedParticle2Track::getRP2TRK( TaupRecoParticles, SmearedTracks)" )
+                .Define("TaupTracks",   "ReconstructedParticle2Track::getRP2TRK( TaupRecoParticles, EFlowTrack_1)" )
 
                 # number of tracks used to reconstruct the Taup vertex
                 .Define("n_TaupTracks", "ReconstructedParticle2Track::getTK_n( TaupTracks )")

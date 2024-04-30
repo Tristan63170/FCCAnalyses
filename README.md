@@ -6,6 +6,8 @@ analysis_new.py is the analyzer to launch in order to produce the tuples used in
 analyzer_vertexing_SV-MCmatched.py is the analyzer to launch in order to produce .root for the IDEA resolution determination (with the scripts explain below)  
 vertex_resolution_last.C is the script to run with ROOT in order to produce tuples ready for the IDEA resolution determination  
 The smeared version to these two last scripts stand for doing the same thing for the IDEA with best tracks (e.g. IP or Omega)  
+The various cards folder contains the corresponding scripts related to regular detector improvements
+The IP exploration folder contains the corresponding scripts related to the transverse IP resolution exploration
 You will have to create the outputs folder for all the results.  
 
 

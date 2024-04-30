@@ -64,6 +64,56 @@ int count_Taum_tracks_in_STracks(ROOT::VecOps::RVec<int> MC_pdg, ROOT::VecOps::R
     return result;
 }
 """)
+
+# bug found in MCParticle::get_indices_MotherByIndex function (return of particles without the MC_pdg targeted) => custom version of the function (to use with exclusive samples):
+ROOT.gInterpreter.Declare("""
+    ROOT::VecOps::RVec<int> get_daughters(int parent_index, std::vector<int> daughter_pdgs,ROOT::VecOps::RVec<int> mc_pdgs,ROOT::VecOps::RVec<int> mc_parentindices, ROOT::VecOps::RVec<float> mc_es) {
+        ROOT::VecOps::RVec<int> result;
+        int parent_pdg = mc_pdgs.at(parent_index);
+        vector<int> particle_parentindex;
+        
+        /*
+        if(count(mc_parentindices.begin(),mc_parentindices.end(),parent_index) != daughter_pdgs.size()){
+            std::cout<<count(mc_parentindices.begin(),mc_parentindices.end(),parent_index)<< " daughters in place of "<< daughter_pdgs.size() <<std::endl;
+            for (int i_mc_particle = 0; i_mc_particle < mc_parentindices.size(); i_mc_particle++){
+                if (mc_parentindices.at(i_mc_particle) == parent_index){
+                          std::cout << "Daughter pdg = " << mc_pdgs.at(i_mc_particle) << " and index " << i_mc_particle << " and E = " << mc_es.at(i_mc_particle) << std::endl;
+                }
+            }
+        }
+        // due to the use of photos in EvtGen, the decays can have additionnal photons but this has no impact regarding their low energy comparing to the regular daughters
+        */
+        for (int i = 0; i < daughter_pdgs.size(); i++) {
+            int particle_index;
+            int particle_pdg;
+            for (int i_mc_particle = 0; i_mc_particle < mc_parentindices.size(); i_mc_particle++) {
+                if (abs(mc_pdgs.at(i_mc_particle)) == abs(daughter_pdgs.at(i)) & 
+                    mc_parentindices.at(i_mc_particle) == parent_index &
+                    particle_parentindex.size() == 0 &            
+                    result.size()==0) {
+                    particle_pdg=mc_pdgs.at(i_mc_particle);
+                    particle_index = i_mc_particle;
+                    particle_parentindex.push_back(mc_parentindices.at(i_mc_particle));
+                }
+                else if (abs(mc_pdgs.at(i_mc_particle)) == abs(daughter_pdgs.at(i)) &
+                    mc_parentindices.at(i_mc_particle) == parent_index &
+                    particle_parentindex.size() != 0 &
+                    count(particle_parentindex.begin(), particle_parentindex.end(), mc_parentindices.at(i_mc_particle)) == particle_parentindex.size() &
+                    result.size()!=0 & 
+                    count(result.begin(), result.end(), i_mc_particle) == 0) {
+                    particle_pdg=mc_pdgs.at(i_mc_particle);
+                    particle_index = i_mc_particle;
+                    particle_parentindex.push_back(mc_parentindices.at(i_mc_particle));
+                }
+            }
+            //std::cout<<"Particle pdg = " << particle_pdg<<std::endl;
+            //std::cout<<"Particle index = "<< particle_index<<std::endl;
+            result.push_back(particle_index);
+        }
+        //std::cout<<std::endl;
+        return result;
+    }
+""")
                           
 class RDFanalysis():
     def analysers(df):
@@ -196,10 +246,11 @@ class RDFanalysis():
                 #             explored recursively if needed.
                 #        2nd: chargeConjugateDaughters
                 #        3rd: inclusiveDecay
-                .Define("Kst2KPi_indices",    "MCParticle::get_indices_MotherByIndex( Kstar_MCindex, { 321, -211 }, true, true, false, Particle, Particle1)" )
+                #.Define("Kst2KPi_indices",    "MCParticle::get_indices_MotherByIndex( Kstar_MCindex, { 321, -211 }, true, true, false, Particle, Particle1)" )
+                .Define("Kst2KPi_indices",    "get_daughters( Kstar_MCindex, { 321, -211 }, MC_pdg, MC_parentindex, MC_e)" )
 
-                .Define("K_from_Kstar_MCindex",  "return Kst2KPi_indices[1]; ")
-                .Define("Pi_from_Kstar_MCindex",  "return Kst2KPi_indices[2]; ")
+                .Define("K_from_Kstar_MCindex",  "return Kst2KPi_indices[0]; ")
+                .Define("Pi_from_Kstar_MCindex",  "return Kst2KPi_indices[1]; ")
 
                 # This is the MC Kaon from the Kstar decay :
                 .Define("K_from_Kstar", " return Particle[K_from_Kstar_MCindex]; ")
@@ -255,7 +306,8 @@ class RDFanalysis():
                 # ----------   the pions from the tau- decay
 
                 # the daughters from the tau-
-                .Define("Taum2Pions_indices",  " MCParticle::get_indices_MotherByIndex( taum_MCindex,  {16, -211, 211, -211  }, true, true, false, Particle, Particle1)" )
+                #.Define("Taum2Pions_indices",  " MCParticle::get_indices_MotherByIndex( taum_MCindex,  {16, -211, 211, -211  }, true, true, false, Particle, Particle1)" )
+                .Define("Taum2Pions_indices",    "get_daughters( taum_MCindex,  {16, -211, 211, -211  }, MC_pdg, MC_parentindex, MC_e)" )
 
                 # RecoParticles associated with the pions from the tau decau
                 .Define("TaumRecoParticles",   " ReconstructedParticle2MC::selRP_matched_to_list( Taum2Pions_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
@@ -270,7 +322,7 @@ class RDFanalysis():
                 .Define("TaumVertex",  "VertexingUtils::get_VertexData( TaumVertexObject ) ")
                 
                 # MC decay vertex of the Taum:
-                # first, get one of the pions from the tau decay ( 0 = the mother tau, 1 = the nu, 2 = a pion)
+                # first, get one of the pions from the tau decay ( 0 = the nu, 1 = a pion)
                 .Define("PiFromTaum_MCindex", "return Taum2Pions_indices[1];")
                 .Define("PiFromTaum", "return Particle[ PiFromTaum_MCindex ] ;")
 
@@ -291,7 +343,8 @@ class RDFanalysis():
                 # ----------   the pions from the tau+ decay
 
                 # the daughters from the tau+
-                .Define("Taup2Pions_indices",  " MCParticle::get_indices_MotherByIndex( taup_MCindex,  {-16, 211, -211, 211  }, true, true, false, Particle, Particle1)" )
+                #.Define("Taup2Pions_indices",  " MCParticle::get_indices_MotherByIndex( taup_MCindex,  {-16, 211, -211, 211  }, true, true, false, Particle, Particle1)" )
+                .Define("Taup2Pions_indices",    "get_daughters( taup_MCindex,  {-16, 211, -211, 211  }, MC_pdg, MC_parentindex, MC_e)" )
 
                 # RecoParticles associated with the pions from the tau decau
                 .Define("TaupRecoParticles",   " ReconstructedParticle2MC::selRP_matched_to_list( Taup2Pions_indices, MCRecoAssociations0,MCRecoAssociations1,ReconstructedParticles,Particle)")
@@ -306,7 +359,7 @@ class RDFanalysis():
                 .Define("TaupVertex",  "VertexingUtils::get_VertexData( TaupVertexObject ) ")
 
                 # MC decay vertex of the Taup:
-                # first, get one of the pions from the tau decay ( 0 = the mother tau, 1 = the nu, 2 = a pion)
+                # first, get one of the pions from the tau decay ( 0 = the nu, 1 = a pion)
                 .Define("PiFromTaup_MCindex", "return Taup2Pions_indices[1];")
                 .Define("PiFromTaup", "return Particle[ PiFromTaup_MCindex ] ;")
 
